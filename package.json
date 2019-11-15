@@ -6,7 +6,15 @@
   "scripts": {
     "start": "cross-env NODE_ENV=production babel-node server",
     "dev": "cross-env DEBUG=dev nodemon --exec babel-node server",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "mocha:test": "nyc mocha --require @babel/register tests/*.js --timeout 20000 --exit",
+    "test": "cross-env NODE_ENV=test npm-run-all db:ready mocha:test",
+    "lint": "eslint src",
+    "fix": "eslint --fix .",
+    "db:ready": "npm-run-all db:undo db:migrate db:seed",
+    "db:migrate": "sequelize db:migrate",
+    "db:undo": "sequelize db:migrate:undo:all",
+    "db:seed": "sequelize db:seed:all",
+    "coverage": "nyc report --reporter=text-lcov | coveralls"
   },
   "repository": {
     "type": "git",
@@ -33,12 +41,34 @@
     "express": "^4.17.1",
     "express-validator": "^6.2.0",
     "morgan": "^1.9.1",
-    "npm-run-all": "^4.1.5"
+    "npm-run-all": "^4.1.5",
+    "pg": "^7.12.1",
+    "pg-hstore": "^2.3.3",
+    "sequelize": "^5.19.1"
   },
   "devDependencies": {
+    "coveralls": "^3.0.6",
     "eslint": "^6.6.0",
     "eslint-config-airbnb-base": "^14.0.0",
     "eslint-plugin-import": "^2.18.2",
-    "nodemon": "^1.19.4"
+    "nodemon": "^1.19.4",
+    "nyc": "^14.1.1",
+    "sequelize-cli": "^5.5.1"
+  },
+  "engines": {
+    "node": "10.16.3"
+  },
+  "nyc": {
+    "exclude": "src/services",
+    "require": [
+      "@babel/register"
+    ],
+    "reporter": [
+      "lcov",
+      "text",
+      "html"
+    ],
+    "sourceMap": true,
+    "instrument": true
   }
 }
