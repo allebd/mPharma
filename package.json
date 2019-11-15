@@ -1,0 +1,41 @@
+{
+  "name": "mPharma",
+  "version": "1.0.0",
+  "description": "a RESTful API that allows the use of internationally recognized set of diagnosis codes",
+  "main": "index.js",
+  "scripts": {
+    "start": "cross-env NODE_ENV=production babel-node server",
+    "dev": "cross-env DEBUG=dev nodemon --exec babel-node server",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/allebd/mPharma.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/allebd/mPharma/issues"
+  },
+  "homepage": "https://github.com/allebd/mPharma#readme",
+  "dependencies": {
+    "@babel/cli": "^7.7.0",
+    "@babel/core": "^7.7.2",
+    "@babel/node": "^7.7.0",
+    "@babel/polyfill": "^7.7.0",
+    "@babel/preset-env": "^7.7.1",
+    "@babel/register": "^7.7.0",
+    "cors": "^2.8.5",
+    "cross-env": "^6.0.3",
+    "debug": "^4.1.1",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "express-validator": "^6.2.0",
+    "morgan": "^1.9.1",
+    "npm-run-all": "^4.1.5"
+  },
+  "devDependencies": {
+    "nodemon": "^1.19.4"
+  }
+}
