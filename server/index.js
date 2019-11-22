@@ -9,6 +9,7 @@ import YAML from 'yamljs';
 import path from 'path';
 import swaggerUI from 'swagger-ui-express';
 import helpers from './helpers';
+import routes from './routes';
 
 config();
 
@@ -31,6 +32,8 @@ const documentation = YAML.load(path.join(__dirname, '../docs/swagger.yaml'));
 
 // setup swagger documentation
 app.use('/docs', swaggerUI.serve, swaggerUI.setup(documentation));
+
+app.use('/api/v1', routes);
 
 // catch 404 and forward to error handler
 app.use(error404);
