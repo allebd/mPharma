@@ -1,6 +1,6 @@
 import models from '../database/models';
 
-const { Diagnosis } = models;
+const { Diagnosis, DiagnosisCategories } = models;
 
 /**
  * Search for all diagnosis
@@ -67,7 +67,8 @@ const updateDiagnosis = async (body, id) => {
  */
 const fetchDiagnosis = async (id) => {
   const fetchedDiagnosis = await Diagnosis.findOne({
-    where: { id }
+    where: { id },
+    include: [{ model: DiagnosisCategories }]
   });
   return fetchedDiagnosis;
 };
@@ -82,7 +83,8 @@ const fetchAllDiagnosis = async (offset, limit) => {
   const fetchedDiagnosis = await Diagnosis.findAll({
     offset,
     limit,
-    order: [['diagnosisCode', 'ASC']]
+    order: [['diagnosisCode', 'ASC']],
+    include: [{ model: DiagnosisCategories }]
   });
   return fetchedDiagnosis;
 };
