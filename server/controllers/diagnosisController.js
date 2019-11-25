@@ -74,11 +74,15 @@ const getAllDiagnosis = async (request, response) => {
   const { query: { page = 1, limit = 20 } } = request;
   const diagnosisCount = await countDiagnosis();
   if (!diagnosisCount) {
-    return responseHelper(response, 404, { error: 'record not found' });
+    return responseHelper(response, 404, {
+      message: 'record not found'
+    });
   }
   const pages = Math.ceil(diagnosisCount / limit);
   if (page > pages) {
-    return responseHelper(response, 404, { error: 'page not found' });
+    return responseHelper(response, 404, {
+      message: 'page not found'
+    });
   }
 
   const offset = limit * (page - 1);
@@ -94,8 +98,29 @@ const getAllDiagnosis = async (request, response) => {
   });
 };
 
+/**
+ * @description Gets a diagnosis record
+ * @param {object} request
+ * @param {object} response
+ * @returns {json} - json
+ */
+const getDiagnosis = async (request, response) => {
+  const { params: { diagnosisId } } = request;
+  const diagnosis = await fetchDiagnosis(diagnosisId);
+  if (!diagnosis) {
+    return responseHelper(response, 404, {
+      message: 'record not found'
+    });
+  }
+  return responseHelper(response, 200, {
+    message: 'record successfully retrieved',
+    data: { diagnosis }
+  });
+};
+
 export default {
   postDiagnosis,
   editDiagnosis,
-  getAllDiagnosis
+  getAllDiagnosis,
+  getDiagnosis
 };

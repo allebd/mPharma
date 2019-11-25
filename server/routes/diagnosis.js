@@ -9,13 +9,15 @@ const { tryCatchHelper } = helpers;
 const {
   postDiagnosis,
   editDiagnosis,
-  getAllDiagnosis
+  getAllDiagnosis,
+  getDiagnosis
 } = diagnosisController;
 const {
   diagnosisValidator: {
     postDiagnosisValidator,
     editDiagnosisValidator,
-    getAllDiagnosisValidator
+    getAllDiagnosisValidator,
+    getDiagnosisValidator
   }
 } = middlewares;
 
@@ -27,5 +29,8 @@ diagnosis.patch(`${DIAGNOSIS_URL}/:diagnosisId`, editDiagnosisValidator, tryCatc
 
 // Route to get all diagnosis record
 diagnosis.get(`${DIAGNOSIS_URL}`, getAllDiagnosisValidator, tryCatchHelper(getAllDiagnosis));
+
+// Route to get a diagnosis record
+diagnosis.get(`${DIAGNOSIS_URL}/:diagnosisId`, getDiagnosisValidator, tryCatchHelper(getDiagnosis));
 
 export default diagnosis;
