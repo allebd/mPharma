@@ -3,7 +3,10 @@ import helpers from '../helpers';
 const {
   errorHelper: { validatorError },
   validatorHelper: {
-    isValidBody, isValidOptionalBody, isValidParam
+    isValidBody,
+    isValidOptionalBody,
+    isValidParam,
+    isValidInt
   }
 } = helpers;
 
@@ -25,6 +28,11 @@ const diagnosisValidator = {
     isValidOptionalBody('fullDescription'),
     isValidOptionalBody('categoryId'),
     isValidOptionalBody('diagnosisCodeType'),
+    validatorError
+  ],
+  getAllDiagnosisValidator: [
+    isValidInt('page').optional(),
+    isValidInt('limit').optional(),
     validatorError
   ]
 };

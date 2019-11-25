@@ -4,9 +4,11 @@ import services from '../services';
 const { responseHelper } = helpers;
 const {
   diagnosisService: {
+    countDiagnosis,
     createDiagnosis,
     updateDiagnosis,
-    fetchDiagnosis
+    fetchDiagnosis,
+    fetchAllDiagnosis
   }
 } = services;
 
@@ -37,7 +39,7 @@ const postDiagnosis = async (request, response) => {
   );
   return responseHelper(response, 201, {
     message: 'record successfully added',
-    data: { record: diagnosis }
+    data: { diagnosis }
   });
 };
 
@@ -58,8 +60,42 @@ const editDiagnosis = async (request, response) => {
   const diagnosis = await updateDiagnosis(body, diagnosisId);
   return responseHelper(response, 200, {
     message: 'record successfully updated',
-    data: { record: diagnosis }
+    data: { diagnosis }
   });
 };
 
-export default { postDiagnosis, editDiagnosis };
+/**
+ * @description Gets all diagnosis record
+ * @param {object} request
+ * @param {object} response
+ * @returns {json} - json
+ */
+const getAllDiagnosis = async (request, response) => {
+  const { query: { page = 1, limit = 20 } } = request;
+  const diagnosisCount = await countDiagnosis();
+  if (!diagnosisCount) {
+    return responseHelper(response, 404, { error: 'record not found' });
+  }
+  const pages = Math.ceil(diagnosisCount / limit);
+  if (page > pages) {
+    return responseHelper(response, 404, { error: 'page not found' });
+  }
+
+  const offset = limit * (page - 1);
+  const diagnosis = await fetchAllDiagnosis(offset, limit);
+  return responseHelper(response, 200, {
+    message: 'record successfully retrieved',
+    data: {
+      diagnosis,
+      currentPage: page,
+      totalPages: pages,
+      limit
+    }
+  });
+};
+
+export default {
+  postDiagnosis,
+  editDiagnosis,
+  getAllDiagnosis
+};

@@ -3,6 +3,16 @@ import models from '../database/models';
 const { Diagnosis } = models;
 
 /**
+ * Search for all diagnosis
+ * @returns {object} an object
+ */
+const countDiagnosis = async () => {
+  const diagnosisCount = await Diagnosis.count();
+  return diagnosisCount;
+};
+
+
+/**
  * Creates a diagnosis record in the database
  * @param {string} diagnosisCode
  * @param {string} fullCode
@@ -62,4 +72,25 @@ const fetchDiagnosis = async (id) => {
   return fetchedDiagnosis;
 };
 
-export default { createDiagnosis, updateDiagnosis, fetchDiagnosis };
+/**
+ * Fetch all diagnosis records
+ * @param {string} offset
+ * @param {string} limit
+ * @returns {object} an object
+ */
+const fetchAllDiagnosis = async (offset, limit) => {
+  const fetchedDiagnosis = await Diagnosis.findAll({
+    offset,
+    limit,
+    order: [['diagnosisCode', 'ASC']]
+  });
+  return fetchedDiagnosis;
+};
+
+export default {
+  countDiagnosis,
+  createDiagnosis,
+  updateDiagnosis,
+  fetchDiagnosis,
+  fetchAllDiagnosis
+};
