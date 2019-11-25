@@ -6,6 +6,10 @@
   "scripts": {
     "start": "cross-env NODE_ENV=production babel-node server",
     "dev": "cross-env DEBUG=dev nodemon --exec babel-node server",
+    "docker:prebuild": "docker build --rm -f 'Dockerfile' -t mpharma:latest .",
+    "docker:build": "docker-compose up -d",
+    "docker:postbuild": "docker run -p 54321:3000 -d mpharma",
+    "docker:run": "docker run mpharma",
     "mocha:test": "nyc mocha --require @babel/register tests/*.js --timeout 20000 --exit",
     "test": "cross-env NODE_ENV=test npm-run-all db:ready mocha:test",
     "lint": "eslint src",
