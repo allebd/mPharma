@@ -4,7 +4,9 @@ import services from '../services';
 const { responseHelper } = helpers;
 const {
   diagnosisService: {
-    createDiagnosis
+    createDiagnosis,
+    updateDiagnosis,
+    fetchDiagnosis
   }
 } = services;
 
@@ -39,4 +41,25 @@ const postDiagnosis = async (request, response) => {
   });
 };
 
-export default { postDiagnosis };
+/**
+ * @description Edit a diagnosis record
+ * @param {object} request
+ * @param {object} response
+ * @returns {json} - json
+ */
+const editDiagnosis = async (request, response) => {
+  const { body, params: { diagnosisId } } = request;
+  const fetchedDiagnosis = await fetchDiagnosis(diagnosisId);
+  if (!fetchedDiagnosis) {
+    return responseHelper(response, 404, {
+      message: 'record not found'
+    });
+  }
+  const diagnosis = await updateDiagnosis(body, diagnosisId);
+  return responseHelper(response, 200, {
+    message: 'record successfully updated',
+    data: { record: diagnosis }
+  });
+};
+
+export default { postDiagnosis, editDiagnosis };

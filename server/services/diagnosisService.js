@@ -31,4 +31,35 @@ const createDiagnosis = async (
   return createdDiagnosis;
 };
 
-export default { createDiagnosis };
+/**
+ * Updates a diagnosis record in the database
+ * @param {string} body
+ * @param {string} id
+ * @returns {object} an object
+ */
+const updateDiagnosis = async (body, id) => {
+  const updatedDiagnosis = await Diagnosis.update(
+    {
+      ...body
+    },
+    {
+      where: { id },
+      returning: true
+    }
+  );
+  return updatedDiagnosis[1][0];
+};
+
+/**
+ * Fetch a diagnosis record
+ * @param {string} id
+ * @returns {object} an object
+ */
+const fetchDiagnosis = async (id) => {
+  const fetchedDiagnosis = await Diagnosis.findOne({
+    where: { id }
+  });
+  return fetchedDiagnosis;
+};
+
+export default { createDiagnosis, updateDiagnosis, fetchDiagnosis };

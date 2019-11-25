@@ -6,10 +6,13 @@ import diagnosisController from '../controllers/diagnosisController';
 const diagnosis = express.Router();
 const DIAGNOSIS_URL = '/diagnosis';
 const { tryCatchHelper } = helpers;
-const { postDiagnosis } = diagnosisController;
-const { diagnosisValidator: { postDiagnosisValidator } } = middlewares;
+const { postDiagnosis, editDiagnosis } = diagnosisController;
+const { diagnosisValidator: { postDiagnosisValidator, editDiagnosisValidator } } = middlewares;
 
 // Route to create a new diagnosis record
 diagnosis.post(`${DIAGNOSIS_URL}`, postDiagnosisValidator, tryCatchHelper(postDiagnosis));
+
+// Route to edit a diagnosis record
+diagnosis.patch(`${DIAGNOSIS_URL}/:diagnosisId`, editDiagnosisValidator, tryCatchHelper(editDiagnosis));
 
 export default diagnosis;
