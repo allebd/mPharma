@@ -12,6 +12,18 @@ const isValidBody = field => check(field)
   .withMessage(`${field} cannot be empty`);
 
 /**
+   * @param {String} field
+   * @returns {Object} - Express-validator
+   */
+const isValidOptionalBody = field => check(field)
+  .optional()
+  .exists()
+  .withMessage(`${field} is a required field`)
+  .not()
+  .isEmpty({ ignore_whitespace: true })
+  .withMessage(`${field} cannot be empty`);
+
+/**
    * @param {String} paramName
    * @returns {Object} - Express-validator
    */
@@ -21,7 +33,10 @@ const isValidParam = paramName => param(paramName)
   .trim()
   .not()
   .isEmpty()
-  .withMessage(`${paramName} cannot be empty`);
+  .withMessage(`${paramName} cannot be empty`)
+  .isUUID()
+  .withMessage(`${paramName} must be an UUID`);
+
 
 /**
  * Validates integer query
@@ -37,6 +52,7 @@ const isValidInt = field => query(field)
   .withMessage(`${field} must be an integer`);
 
 export default {
+  isValidOptionalBody,
   isValidParam,
   isValidBody,
   isValidInt
