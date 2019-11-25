@@ -15,7 +15,7 @@ const {
 
 const BASE_URL = '/api/v1';
 const DIAGNOSIS_VALID_URL = `${BASE_URL}/diagnosis`;
-const UPDATE_DIAGNOSIS_VALID_URL = `${BASE_URL}/diagnosis/6a7b986e-1102-4e9a-83b0-cad7df993e1c`;
+const SINGLE_DIAGNOSIS_VALID_URL = `${BASE_URL}/diagnosis/6a7b986e-1102-4e9a-83b0-cad7df993e1c`;
 const NOT_FOUND_DIAGNOSIS_URL = `${BASE_URL}/diagnosis/122a0d86-8b78-4bb8-b28f-8e5f7811c456`;
 const INVALID_DIAGNOSIS_URL = `${BASE_URL}/diagnosis/891`;
 
@@ -51,7 +51,7 @@ describe('DIAGNOSIS TEST', () => {
   describe('EDIT A DIAGNOSIS RECORD', () => {
     it('should successfully update a diagnosis record', (done) => {
       chai.request(server)
-        .patch(UPDATE_DIAGNOSIS_VALID_URL)
+        .patch(SINGLE_DIAGNOSIS_VALID_URL)
         .send(updateDiagnosis)
         .end((error, response) => {
           expect(response).to.have.status(200);
@@ -65,7 +65,7 @@ describe('DIAGNOSIS TEST', () => {
 
     it('should not be able to update a diagnosis record if the record is empty', (done) => {
       chai.request(server)
-        .patch(UPDATE_DIAGNOSIS_VALID_URL)
+        .patch(SINGLE_DIAGNOSIS_VALID_URL)
         .send(invalidDiagnosis1)
         .end((error, response) => {
           expect(response).to.have.status(400);
@@ -98,7 +98,7 @@ describe('DIAGNOSIS TEST', () => {
     });
   });
 
-  describe('GET ALL DIAGNOSIS', () => {
+  describe('GET ALL DIAGNOSIS RECORDS', () => {
     it('should successfully return all diagnosis', (done) => {
       chai.request(server)
         .get(DIAGNOSIS_VALID_URL)
@@ -181,9 +181,9 @@ describe('DIAGNOSIS TEST', () => {
         .query({ page: 1000, limit: 10 })
         .end((error, response) => {
           expect(response).to.have.status(404);
-          expect(response.body).to.haveOwnProperty('error');
-          expect(response.body.error).to.be.a('string');
-          expect(response.body.error).to.equal('page not found');
+          expect(response.body).to.haveOwnProperty('message');
+          expect(response.body.message).to.be.a('string');
+          expect(response.body.message).to.equal('page not found');
           done();
         });
     });
@@ -199,6 +199,42 @@ describe('DIAGNOSIS TEST', () => {
           expect(response.body.data).to.be.an('object');
           expect(response.body.message).to.equal('record successfully retrieved');
           expect(response.body.data.length).to.not.equal(0);
+          done();
+        });
+    });
+  });
+
+  describe('GET A DIAGNOSIS RECORD', () => {
+    it('should successfully get a diagnosis record', (done) => {
+      chai.request(server)
+        .get(SINGLE_DIAGNOSIS_VALID_URL)
+        .end((error, response) => {
+          expect(response).to.have.status(200);
+          expect(response.body).to.be.an('object');
+          expect(response.body.data).to.haveOwnProperty('diagnosis');
+          expect(response.body.data.diagnosis).to.be.an('object');
+          expect(response.body.data.diagnosis).to.have.keys(['id', 'diagnosisCode', 'fullCode', 'abbreviatedDescription', 'fullDescription', 'categoryId', 'diagnosisCodeType', 'updatedAt', 'createdAt']);
+          done();
+        });
+    });
+
+    it('should not be able to get a diagnosis record if the diagnosis record number invalid', (done) => {
+      chai.request(server)
+        .get(INVALID_DIAGNOSIS_URL)
+        .end((error, response) => {
+          expect(response).to.have.status(400);
+          expect(response.body).to.be.an('object');
+          done();
+        });
+    });
+
+    it('should not be able to get a diagnosis record if the diagnosis record number does not exist', (done) => {
+      chai.request(server)
+        .get(NOT_FOUND_DIAGNOSIS_URL)
+        .end((error, response) => {
+          expect(response).to.have.status(404);
+          expect(response.body).to.be.an('object');
+          expect(response.body.message).to.equal('record not found');
           done();
         });
     });

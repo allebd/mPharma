@@ -34,6 +34,10 @@ const diagnosisValidator = {
     isValidInt('page').optional(),
     isValidInt('limit').optional(),
     validatorError
+  ],
+  getDiagnosisValidator: [
+    isValidParam('diagnosisId'),
+    validatorError
   ]
 };
 
