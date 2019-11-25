@@ -88,7 +88,7 @@ const getAllDiagnosis = async (request, response) => {
   const offset = limit * (page - 1);
   const diagnosis = await fetchAllDiagnosis(offset, limit);
   return responseHelper(response, 200, {
-    message: 'record successfully retrieved',
+    message: 'records successfully retrieved',
     data: {
       diagnosis,
       currentPage: page,
@@ -133,7 +133,7 @@ const deleteDiagnosis = async (request, response) => {
     });
   }
   return responseHelper(response, 200, {
-    message: 'record successfully retrieved'
+    message: 'record successfully deleted'
   });
 };
 

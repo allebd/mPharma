@@ -1,0 +1,456 @@
+openapi: 3.0.0
+info:
+  title: mPharma
+  description: a RESTful API that allows the use of internationally recognized set of diagnosis codes
+
+  license:
+    name: MIT License
+    url: https://opensource.org/licenses/MIT
+  version: 1.0.0
+
+externalDocs:
+  description: Checkout the GitHub repo
+  url: https://github.com/allebd/mPharma
+
+servers:
+- url: https://mpharma-allebd.herokuapp.com/api/v1
+  description: Heroku deployment
+
+tags:
+- name: Diagnosis
+  description: Diagnosis routes
+
+paths:
+  /diagnosis: 
+    get:
+      tags:
+        - Diagnosis
+      summary: View all diagnosis record
+      parameters:
+        - name: page
+          in: query
+          schema:
+            type: integer
+        - name: limit
+          in: query
+          schema:
+            type: integer
+      responses:
+        200:
+          description: records successfully retrieved
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: records successfully retrieved
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        diagnosis:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              id:
+                                type: string
+                                example: 'b1df509c-406b-416e-9c33-734d888e178b'
+                              diagnosisCode:
+                                type: string
+                                example: 9
+                              fullCode:
+                                type: string
+                                example: A009
+                              abbreviatedDescription:
+                                type: string
+                                example: Cholera, unspecified
+                              fullDescription:
+                                type: string
+                                example: Cholera, unspecified
+                              categoryId:
+                                type: string
+                                example: 'b1df509c-406b-416e-9c33-734d888e178b'
+                              diagnosisCodeType:
+                                type: string
+                                example: 'icd-10'
+                              updatedAt:
+                                type: string
+                                example: 2019-11-11 23:23:23
+                              createdAt:
+                                type: string
+                                example: 2019-11-11 23:23:23
+        404:
+          description: entity not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: page not found
+        500:
+          description: server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: error occurred
+    post:
+      tags:
+        - Diagnosis
+      summary: Creates a diagnosis record
+      description: add a diagnosis record
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                diagnosisCode:
+                  type: string
+                  example: 9
+                fullCode:
+                  type: string
+                  example: A009
+                abbreviatedDescription:
+                  type: string
+                  example: Cholera, unspecified
+                fullDescription:
+                  type: string
+                  example: Cholera, unspecified
+                categoryId:
+                  type: string
+                  example: 'b1df509c-406b-416e-9c33-734d888e178b'
+                diagnosisCodeType:
+                  type: string
+                  example: 'icd-10'
+      responses:
+        201:
+          description: record successfully added
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: record successfully added
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        diagnosis:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              id:
+                                type: string
+                                example: 'b1df509c-406b-416e-9c33-734d888e178b'
+                              diagnosisCode:
+                                type: string
+                                example: 9
+                              fullCode:
+                                type: string
+                                example: A009
+                              abbreviatedDescription:
+                                type: string
+                                example: Cholera, unspecified
+                              fullDescription:
+                                type: string
+                                example: Cholera, unspecified
+                              categoryId:
+                                type: string
+                                example: 'b1df509c-406b-416e-9c33-734d888e178b'
+                              diagnosisCodeType:
+                                type: string
+                                example: 'icd-10'
+                              updatedAt:
+                                type: string
+                                example: 2019-11-11 23:23:23
+                              createdAt:
+                                type: string
+                                example: 2019-11-11 23:23:23
+        400:
+          description: bad request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        field:
+                          type: string
+                          example: field
+                        message:
+                          type: string
+                          example: field cannot be empty
+        500:
+          description: server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: error occurred
+  /diagnosis/{diagnosisId}:
+    patch:
+      tags:
+        - Diagnosis
+      summary: edits a diagnosis record
+      description: edits a diagnosis record
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                diagnosisCode:
+                  type: string
+                  example: 9
+                fullCode:
+                  type: string
+                  example: A009
+                abbreviatedDescription:
+                  type: string
+                  example: Cholera, unspecified
+                fullDescription:
+                  type: string
+                  example: Cholera, unspecified
+                categoryId:
+                  type: string
+                  example: 'b1df509c-406b-416e-9c33-734d888e178b'
+                diagnosisCodeType:
+                  type: string
+                  example: 'icd-10'
+      parameters:
+        - name: diagnosisId
+          in: path
+          required: true
+          schema:
+            type: string
+            example: 'b1df509c-406b-416e-9c33-734d888e178b'
+      responses:
+        200:
+          description: record successfully updated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: record successfully updated
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        diagnosis:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              id:
+                                type: string
+                                example: 'b1df509c-406b-416e-9c33-734d888e178b'
+                              diagnosisCode:
+                                type: string
+                                example: 9
+                              fullCode:
+                                type: string
+                                example: A009
+                              abbreviatedDescription:
+                                type: string
+                                example: Cholera, unspecified
+                              fullDescription:
+                                type: string
+                                example: Cholera, unspecified
+                              categoryId:
+                                type: string
+                                example: 'b1df509c-406b-416e-9c33-734d888e178b'
+                              diagnosisCodeType:
+                                type: string
+                                example: 'icd-10'
+                              updatedAt:
+                                type: string
+                                example: 2019-11-11 23:23:23
+                              createdAt:
+                                type: string
+                                example: 2019-11-11 23:23:23
+        400:
+          description: bad request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        field:
+                          type: string
+                          example: field
+                        message:
+                          type: string
+                          example: field be empty
+        404:
+          description: entity not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: entity not found
+        500:
+          description: server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: error occurred
+    get:
+      tags:
+        - Diagnosis
+      summary: Get a diagnosis record
+      description: Gets a diagnosis record
+      parameters:
+        - name: diagnosisId
+          in: path
+          required: true
+          schema:
+            type: string
+            example: 'b1df509c-406b-416e-9c33-734d888e178b'
+      responses:
+        201:
+          description: record successfully retrieved
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: record successfully retrieved
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        diagnosis:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              id:
+                                type: string
+                                example: 'b1df509c-406b-416e-9c33-734d888e178b'
+                              diagnosisCode:
+                                type: string
+                                example: 9
+                              fullCode:
+                                type: string
+                                example: A009
+                              abbreviatedDescription:
+                                type: string
+                                example: Cholera, unspecified
+                              fullDescription:
+                                type: string
+                                example: Cholera, unspecified
+                              categoryId:
+                                type: string
+                                example: 'b1df509c-406b-416e-9c33-734d888e178b'
+                              diagnosisCodeType:
+                                type: string
+                                example: 'icd-10'
+                              updatedAt:
+                                type: string
+                                example: 2019-11-11 23:23:23
+                              createdAt:
+                                type: string
+                                example: 2019-11-11 23:23:23
+        404:
+          description: entity not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: entity not found
+        500:
+          description: server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: error occurred
+    delete:
+      tags:
+        - Diagnosis
+      summary: Delete a diagnosis record
+      description: Dlete a diagnosis record
+      parameters:
+        - name: diagnosisId
+          in: path
+          required: true
+          schema:
+            type: string
+            example: 'b1df509c-406b-416e-9c33-734d888e178b'
+      responses:
+        201:
+          description: record successfully deleted
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: record successfully deleted
+        404:
+          description: entity not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: entity not found
+        500:
+          description: server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: error occurred

@@ -197,7 +197,7 @@ describe('DIAGNOSIS TEST', () => {
           expect(response.body.data).to.have.keys(['diagnosis', 'currentPage', 'totalPages', 'limit']);
           expect(response.body.message).to.be.a('string');
           expect(response.body.data).to.be.an('object');
-          expect(response.body.message).to.equal('record successfully retrieved');
+          expect(response.body.message).to.equal('records successfully retrieved');
           expect(response.body.data.length).to.not.equal(0);
           done();
         });
@@ -213,7 +213,7 @@ describe('DIAGNOSIS TEST', () => {
           expect(response.body).to.be.an('object');
           expect(response.body.data).to.haveOwnProperty('diagnosis');
           expect(response.body.data.diagnosis).to.be.an('object');
-          expect(response.body.data.diagnosis).to.have.keys(['id', 'diagnosisCode', 'fullCode', 'abbreviatedDescription', 'fullDescription', 'categoryId', 'diagnosisCodeType', 'updatedAt', 'createdAt']);
+          expect(response.body.data.diagnosis).to.have.keys(['id', 'diagnosisCode', 'fullCode', 'abbreviatedDescription', 'fullDescription', 'categoryId', 'diagnosisCodeType', 'updatedAt', 'createdAt', 'DiagnosisCategory']);
           done();
         });
     });
@@ -248,7 +248,7 @@ describe('DIAGNOSIS TEST', () => {
           expect(response).to.have.status(200);
           expect(response.body).to.be.an('object');
           expect(response.body).to.haveOwnProperty('message');
-          expect(response.body.message).to.equal('record successfully retrieved');
+          expect(response.body.message).to.equal('record successfully deleted');
           done();
         });
     });
