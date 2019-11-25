@@ -38,6 +38,10 @@ const diagnosisValidator = {
   getDiagnosisValidator: [
     isValidParam('diagnosisId'),
     validatorError
+  ],
+  deleteDiagnosisValidator: [
+    isValidParam('diagnosisId'),
+    validatorError
   ]
 };
 

@@ -10,14 +10,16 @@ const {
   postDiagnosis,
   editDiagnosis,
   getAllDiagnosis,
-  getDiagnosis
+  getDiagnosis,
+  deleteDiagnosis
 } = diagnosisController;
 const {
   diagnosisValidator: {
     postDiagnosisValidator,
     editDiagnosisValidator,
     getAllDiagnosisValidator,
-    getDiagnosisValidator
+    getDiagnosisValidator,
+    deleteDiagnosisValidator
   }
 } = middlewares;
 
@@ -32,5 +34,8 @@ diagnosis.get(`${DIAGNOSIS_URL}`, getAllDiagnosisValidator, tryCatchHelper(getAl
 
 // Route to get a diagnosis record
 diagnosis.get(`${DIAGNOSIS_URL}/:diagnosisId`, getDiagnosisValidator, tryCatchHelper(getDiagnosis));
+
+// Route to delete a diagnosis record
+diagnosis.delete(`${DIAGNOSIS_URL}/:diagnosisId`, deleteDiagnosisValidator, tryCatchHelper(deleteDiagnosis));
 
 export default diagnosis;

@@ -118,9 +118,29 @@ const getDiagnosis = async (request, response) => {
   });
 };
 
+/**
+ * @description Delete a diagnosis record
+ * @param {object} request
+ * @param {object} response
+ * @returns {json} - json
+ */
+const deleteDiagnosis = async (request, response) => {
+  const { params: { diagnosisId } } = request;
+  const diagnosis = await fetchDiagnosis(diagnosisId);
+  if (!diagnosis) {
+    return responseHelper(response, 404, {
+      message: 'record not found'
+    });
+  }
+  return responseHelper(response, 200, {
+    message: 'record successfully retrieved'
+  });
+};
+
 export default {
   postDiagnosis,
   editDiagnosis,
   getAllDiagnosis,
-  getDiagnosis
+  getDiagnosis,
+  deleteDiagnosis
 };
