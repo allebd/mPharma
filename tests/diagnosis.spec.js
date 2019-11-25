@@ -239,4 +239,39 @@ describe('DIAGNOSIS TEST', () => {
         });
     });
   });
+
+  describe('DELETE A DIAGNOSIS RECORD', () => {
+    it('should successfully delete a diagnosis record', (done) => {
+      chai.request(server)
+        .delete(SINGLE_DIAGNOSIS_VALID_URL)
+        .end((error, response) => {
+          expect(response).to.have.status(200);
+          expect(response.body).to.be.an('object');
+          expect(response.body).to.haveOwnProperty('message');
+          expect(response.body.message).to.equal('record successfully retrieved');
+          done();
+        });
+    });
+
+    it('should not be able to get a diagnosis record if the diagnosis record number invalid', (done) => {
+      chai.request(server)
+        .delete(INVALID_DIAGNOSIS_URL)
+        .end((error, response) => {
+          expect(response).to.have.status(400);
+          expect(response.body).to.be.an('object');
+          done();
+        });
+    });
+
+    it('should not be able to get a diagnosis record if the diagnosis record number does not exist', (done) => {
+      chai.request(server)
+        .delete(NOT_FOUND_DIAGNOSIS_URL)
+        .end((error, response) => {
+          expect(response).to.have.status(404);
+          expect(response.body).to.be.an('object');
+          expect(response.body.message).to.equal('record not found');
+          done();
+        });
+    });
+  });
 });
